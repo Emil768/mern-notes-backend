@@ -94,7 +94,7 @@ app.delete("/notes/:id", checkAuth, NoteController.remove);
 app.post("/uploads", upload.single("image"), (req, res) => {
   try {
     res.json({
-      url: `/uploads/${req.file.originalname}`,
+      url: `uploads/${req.file.originalname}`,
     });
   } catch (err) {
     res.status(500).json({
