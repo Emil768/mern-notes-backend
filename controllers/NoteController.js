@@ -1,6 +1,3 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-
 import NoteModel from "../models/Note.js";
 
 export const getAll = async (req, res) => {
@@ -114,7 +111,6 @@ export const remove = async (req, res) => {
         }
 
         if (!doc) {
-          console.log(doc);
           return res.status(500).json({
             message: "Статья не найдена",
           });
@@ -125,6 +121,31 @@ export const remove = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: "Не удалось удалить заметку",
+    });
+  }
+};
+
+export const getCategory = async (req, res) => {
+  try {
+    const category = req.params.name;
+
+    NoteModel.find({ category }, (err, doc) => {
+      if (err) {
+        res.status(500).json({
+          message: "Не удалось найти категорию",
+        });
+      }
+
+      if (!doc) {
+        return res.status(500).json({
+          message: "Заметки не найдены",
+        });
+      }
+      res.json(doc);
+    }).populate("user");
+  } catch (err) {
+    res.status(500).json({
+      message: "Не удалось отобразить категорию",
     });
   }
 };

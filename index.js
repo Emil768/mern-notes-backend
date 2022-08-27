@@ -64,6 +64,9 @@ app.get("/notes", NoteController.getAll);
 //Получить одну заметку
 app.get("/notes/:id", NoteController.getOne);
 
+//Заметки по категориям
+app.get("/category/:name", NoteController.getCategory);
+
 //Создать заметку
 app.post(
   "/notes",
@@ -86,8 +89,7 @@ app.patch(
 app.delete("/notes/:id", checkAuth, NoteController.remove);
 
 //Загрузить файл в статическую папку
-
-app.post("/uploads", checkAuth, upload.single("image"), (req, res) => {
+app.post("/uploads", upload.single("image"), (req, res) => {
   try {
     res.json({
       url: `/uploads/${req.file.originalname}`,
