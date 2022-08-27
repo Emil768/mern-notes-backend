@@ -99,7 +99,7 @@ app.post("/uploads", upload.single("image"), (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 3001, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
   if (err) console.log(err);
-  console.log("Server is starting in 3001 port...");
+  console.log("Server is starting in 4444 port...");
 });
