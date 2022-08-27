@@ -20,9 +20,7 @@ app.use("/uploads", express.static("uploads"));
 
 // MongoDb
 mongoose
-  .connect(
-    "mongodb+srv://admin:54321@cluster0.nlgep6u.mongodb.net/Notes?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("DB OK"))
   .catch((err) => console.log(err));
 
@@ -101,7 +99,7 @@ app.post("/uploads", upload.single("image"), (req, res) => {
   }
 });
 
-app.listen(3001, (err) => {
+app.listen(process.env.PORT || 3001, (err) => {
   if (err) console.log(err);
   console.log("Server is starting in 3001 port...");
 });
