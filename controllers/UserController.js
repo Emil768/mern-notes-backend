@@ -1,7 +1,9 @@
 import bcrypt from "bcrypt";
+import formidable from "formidable";
 import jwt from "jsonwebtoken";
 
 import UserModel from "../models/User.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const login = async (req, res) => {
   try {
@@ -60,8 +62,11 @@ export const register = async (req, res) => {
     const doc = UserModel({
       fullName: req.body.fullName,
       email: req.body.email,
-      avatarUrl: req.body.avatarUrl,
       passwordHash: hash,
+      avatarUrl: {
+        public_id: req.body.avatarUrl.public_id,
+        url: req.body.avatarUrl.url,
+      },
     });
 
     const user = await doc.save();
@@ -87,6 +92,21 @@ export const register = async (req, res) => {
     console.log(err);
     res.status(500).json({
       message: "Не удалось зарегистрироваться",
+    });
+  }
+};
+
+export const uploads = (req, res) => {
+  console.log(req.body);
+  try {
+    const form = formidable();
+    form.parse(req, async (err, field, file) => {
+      const response = await cloudinary.uploader.upload(file.image.filepath);
+      res.json(response);
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Не удалось загрузить файл",
     });
   }
 };

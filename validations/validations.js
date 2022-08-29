@@ -9,7 +9,7 @@ export const registerValidation = [
   body("fullName").isLength({ min: 3 }),
   body("email").isEmail(),
   body("password").isLength({ min: 5 }),
-  body("avatarUrl").optional().isString(),
+  body("avatarUrl").isObject(),
 ];
 
 export const noteCreateValidation = [
